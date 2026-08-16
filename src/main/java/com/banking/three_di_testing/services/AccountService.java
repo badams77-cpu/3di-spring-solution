@@ -8,6 +8,7 @@ import com.banking.three_di_testing.utils.CodeGenerator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,19 +70,24 @@ public class AccountService {
         return account.orElse(null);
     }
 
-    public Account findTransactionsBySortCodeAccountNumberAndDateBetween(String sortCode, String accountNumber, LocalDate startDate, LocalDate endDate) {
+    public Account findTransactionsBySortCodeAccountNumberAndDateBetween(String sortCode, String accountNumber, LocalDateTime startDate, LocalDateTime endDate) {
         Optional<Account> account = accountRepository
                 .findBySortCodeAndAccountNumber(sortCode, accountNumber);
 
         final List<Transaction> transactions = new LinkedList<>();
 
         account.ifPresent(value ->
-                transactions.addAll(transactionRepository.findBySourceAccountIdOrderByInitiationDateWithDateinRange(value.getId(), startDate.atStartOfDay(), endDate.atTime(23,59)))
+                transactions.addAll(
+                        transactionRepository.findBySourceAccountIdOrderByInitiationDateWithDateinRange(value.getId(),
 
+                                startDate, endDate)
+                                .stream().map(Transaction::clone).collect(Collectors.toList())
+
+                )
         );
         transactions.forEach( t->t.setAmount(-t.getAmount()));
         account.ifPresent(value ->
-                transactions.addAll(transactionRepository.findByTargetAccountIdOrderByInitiationDateWithDateInRange(value.getId(), startDate.atStartOfDay(), endDate.atTime(23,59)))
+                transactions.addAll(transactionRepository.findByTargetAccountIdOrderByInitiationDateWithDateInRange(value.getId(), startDate, endDate))
 
         );
         account.ifPresent( a->a.setTransactions(transactions.stream()

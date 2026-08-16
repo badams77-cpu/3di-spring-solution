@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class Transaction {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
     private long id;
 
@@ -78,6 +77,25 @@ public class Transaction {
     }
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public Transaction clone(){
+
+        Transaction transaction = null;
+        try {
+            transaction = (Transaction) super.clone();
+        } catch (CloneNotSupportedException e){
+            transaction = new Transaction();
+        }
+        transaction.id = this.id;
+        transaction.sourceAccountId = this.sourceAccountId;
+        transaction.targetAccountId = this.targetAccountId;
+        transaction.targetOwnerName = this.targetOwnerName;
+        transaction.amount = this.amount;
+        transaction.initiationDate = this.initiationDate;
+        transaction.completionDate = this.completionDate;
+        transaction.reference = this.reference;
+        return transaction;
     }
 
     @Override

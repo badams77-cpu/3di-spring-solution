@@ -3,6 +3,7 @@ package com.banking.three_di_testing.utils;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class TransactionsByDateInput {
@@ -14,10 +15,10 @@ public class TransactionsByDateInput {
     private String accountNumber;
 
     @NotNull
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @NotNull
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     public TransactionsByDateInput() {
     }
@@ -39,19 +40,19 @@ public class TransactionsByDateInput {
     }
 
 
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

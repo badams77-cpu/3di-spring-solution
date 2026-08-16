@@ -14,6 +14,7 @@ public class TransactionsByDateInput {
     @NotBlank(message = "Account number is mandatory")
     private String accountNumber;
 
+    
     @NotNull
     private LocalDateTime startDate;
 
